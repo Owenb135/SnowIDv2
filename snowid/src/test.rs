@@ -18,11 +18,18 @@ mod tests {
     let mut generate = SnowIdGenerator::new(1);
     let id = generate.generate();
 
-    let (ts, machine_id, seq) = decode(id);
+    let (ts, machine_id, _seq) = decode(id);
     
 
-    assert!(ts>0);
-    assert_eq!(machine, 1);
-    assert!(seq>=0);
+    assert!(ts > 0);
+    assert_eq!(machine_id, 1);
+  }
+
+  #[test]
+  fn test_global_generator() {
+    use crate::global::generate_id_for_machine;
+    let id_m2 = generate_id_for_machine(2);
+    let (_, machine_id, _) = decode(id_m2);
+    assert_eq!(machine_id, 2);
   }
 }

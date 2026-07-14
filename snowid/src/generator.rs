@@ -28,8 +28,8 @@ impl SnowIdGenerator {
     }
 
     //same millis -> increase sequence
-    if self.sequence == 0 {
-      self.sequence = (self.sequence +1) & MAX_SEQUENCE;
+    if timestamp == self.last_timestamp {
+      self.sequence = (self.sequence + 1) & MAX_SEQUENCE;
 
       // sequence overflow -> wait for new ms
       if self.sequence == 0 {
@@ -37,7 +37,7 @@ impl SnowIdGenerator {
           timestamp = current_time_millis();
         }
       }
-    }else{
+    } else {
       //new millis -> reset sequence
       self.sequence = 0;
     }

@@ -1,0 +1,6 @@
+[workspace]
+members = [
+    "snowid",
+    "snowid_pg",
+]
+resolver = "2"

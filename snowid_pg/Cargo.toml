@@ -4,6 +4,7 @@ version = "0.0.0"
 edition = "2021"
 
 [lib]
+name = "snowid"
 crate-type = ["cdylib"]
 
 [features]
@@ -19,7 +20,7 @@ pg_bench = ["dep:pgrx-bench"]
 
 [dependencies]
 pgrx = "=0.18.0"
-snowid = {path = "../snowid"}
+snowid_core = { path = "../snowid", package = "snowid" }
 
 [dependencies.pgrx-bench]
 version = "=0.18.0"
