@@ -29,12 +29,3 @@ optional = true
 [dev-dependencies]
 [dev-dependencies.pgrx-tests]
 version = "=0.18.0"
-
-[profile.dev]
-panic = "unwind"
-
-[profile.release]
-panic = "unwind"
-opt-level = 3
-lto = "fat"
-codegen-units = 1

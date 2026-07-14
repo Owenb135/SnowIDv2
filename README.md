@@ -35,7 +35,25 @@ INSERT INTO users (username) VALUES ('alice') RETURNING id;
 ```
 
 ### Option 2: Self-Hosted PostgreSQL / Docker (Native C/Rust Extension)
-Install the PostgreSQL extension:
+
+#### Using Docker & Docker Compose (Recommended for Local Dev / Containerized Deployments)
+We provide a multi-stage `Dockerfile` and `docker-compose.yml` that builds and pre-installs the native Rust extension automatically:
+
+```bash
+# Start PostgreSQL 17 with the SnowID native extension pre-installed
+docker compose up -d --build
+
+# Connect to the database and test ID generation right away
+docker exec -it snowid_postgres psql -U postgres -d snowid_demo
+```
+
+Or build directly with Docker:
+```bash
+docker build --build-arg PG_MAJOR=17 -t snowid-postgres:latest .
+docker run -d --name snowid-pg -p 5432:5432 -e POSTGRES_PASSWORD=postgres snowid-postgres:latest
+```
+
+Once running inside PostgreSQL, enable and use the extension:
 
 ```sql
 CREATE EXTENSION IF NOT EXISTS snowid;
@@ -84,6 +102,10 @@ cargo run --release -p snowid --example benchmark
 
 ```
 SnowIDv2/
+├── Dockerfile               # Multi-stage build for PostgreSQL with SnowID pre-installed
+├── docker-compose.yml       # Turnkey Docker Compose configuration
+├── docker/
+│   └── initdb/              # Auto-initialization scripts when running via Docker
 ├── snowid/                  # Core pure-Rust Snowflake generator library
 ├── snowid_pg/               # PostgreSQL Extension wrapper (CREATE EXTENSION snowid;)
 ├── sql/
