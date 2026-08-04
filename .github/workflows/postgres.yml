@@ -54,4 +54,4 @@ jobs:
       
     - name: Test Postgres Extension (PG 16)
       working-directory: ./snowid_pg
-      run: cargo pgrx test pg16
+      run: cargo pgrx test pg16 --no-default-features
