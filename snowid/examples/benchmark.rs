@@ -1,6 +1,6 @@
-use std::time::Instant;
-use snowid::generator::SnowIdGenerator;
 use snowid::generate_id;
+use snowid::generator::SnowIdGenerator;
+use std::time::Instant;
 
 fn main() {
     println!("===============================================================");
@@ -69,7 +69,10 @@ fn main() {
         let ids_per_sec = (iterations as f64) / elapsed.as_secs_f64();
         let nanos_per_id = elapsed.as_nanos() as f64 / (iterations as f64);
 
-        println!("3. Multi-Threaded Concurrent Generation ({} Threads across machines):", num_threads);
+        println!(
+            "3. Multi-Threaded Concurrent Generation ({} Threads across machines):",
+            num_threads
+        );
         println!("   - Iterations:      {:>12}", iterations);
         println!("   - Elapsed Time:    {:>12.2?}", elapsed);
         println!("   - Throughput:      {:>12.0} IDs/sec", ids_per_sec);

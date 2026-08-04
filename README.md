@@ -1,5 +1,9 @@
 # SnowIDv2 ❄️
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Rust](https://github.com/your-username/SnowID-V2/actions/workflows/rust.yml/badge.svg)](https://github.com/your-username/SnowID-V2/actions/workflows/rust.yml)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-14%20%7C%2015%20%7C%2016%20%7C%2017-blue)](https://www.postgresql.org/)
+
 High-performance, 64-bit Snowflake-style distributed ID generator for PostgreSQL and Rust.
 
 Generate strictly time-ordered, distributed, 64-bit IDs directly inside your database—**zero application-side ID generation needed**.
@@ -12,6 +16,44 @@ Generate strictly time-ordered, distributed, 64-bit IDs directly inside your dat
 - **Zero B-Tree Index Fragmentation**: Strictly time-ordered IDs ensure append-only B-tree index inserts in PostgreSQL.
 - **Language & Framework Independent**: Works seamlessly with any backend language (Node.js, Python, Go, Java, Rust, C#, PHP) or ORM (Prisma, Drizzle, SQLAlchemy, GORM).
 - **Blazing Fast**: Generates over **40,000,000 IDs per second** concurrently (~25 nanoseconds per ID).
+
+---
+
+## 🏗️ Architecture
+
+```mermaid
+graph TD
+    App["Backend Application<br/>(Node.js, Rust, Go, Python)"] -->|INSERT INTO ... RETURNING id| PG["PostgreSQL Database"]
+    
+    subgraph PostgreSQL Layer
+        PG -->|DEFAULT snowid()| NativeExt["Native Rust Extension<br/>(snowid_pg)"]
+        PG -->|DEFAULT snowid_next(1)| PureSQL["Pure SQL Function<br/>(postgres_pure.sql)"]
+    end
+    
+    subgraph Core Logic
+        NativeExt --> Core["Core Rust Library<br/>(snowid)"]
+    end
+    
+    style App fill:#f9f,stroke:#333,stroke-width:2px
+    style PG fill:#69b3a2,stroke:#333,stroke-width:2px
+    style NativeExt fill:#ff9999,stroke:#333,stroke-width:2px
+    style PureSQL fill:#ffb366,stroke:#333,stroke-width:2px
+    style Core fill:#ff6666,stroke:#333,stroke-width:2px
+```
+
+---
+
+## 🧩 How it Works (Bit Layout)
+
+SnowIDv2 generates a 64-bit integer (`BIGINT`) composed of three parts, keeping the highest bit `0` so it remains positive:
+
+| Timestamp (41 bits) | Machine ID (10 bits) | Sequence (12 bits) |
+| :--- | :--- | :--- |
+| Milliseconds since custom epoch | Configurable node/worker ID | Auto-incrementing per millisecond |
+
+- **41 bits for timestamp**: Gives us ~69 years of IDs before rolling over.
+- **10 bits for machine ID**: Supports up to 1024 unique database nodes or application workers.
+- **12 bits for sequence**: Supports generating up to 4,096 unique IDs per millisecond, per machine.
 
 ---
 
