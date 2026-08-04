@@ -34,6 +34,18 @@ jobs:
         path: ~/.pgrx
         key: ${{ runner.os }}-pgrx
         
+    - name: Install PostgreSQL build dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y \
+          build-essential \
+          clang \
+          pkg-config \
+          libreadline-dev \
+          zlib1g-dev \
+          flex \
+          bison
+
     - name: Install cargo-pgrx
       run: cargo install --locked cargo-pgrx
       
