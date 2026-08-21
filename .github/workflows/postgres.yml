@@ -47,7 +47,7 @@ jobs:
           bison
 
     - name: Install cargo-pgrx
-      run: cargo install --locked cargo-pgrx
+      run: cargo install --locked cargo-pgrx --version 0.18.0
       
     - name: Initialize pgrx (this takes a while on first run)
       run: cargo pgrx init
