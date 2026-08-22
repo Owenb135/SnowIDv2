@@ -57,6 +57,32 @@ SnowIDv2 generates a 64-bit integer (`BIGINT`) composed of three parts, keeping 
 
 ---
 
+## 🚀 Quick Start (Rust Application)
+
+If you just want to generate Snowflake IDs directly inside your Rust application (without relying on the database to generate them), it's as simple as calling a single function!
+
+1. Add the core library to your `Cargo.toml`:
+```bash
+cargo add snowid
+```
+
+2. Generate an ID anywhere in your code:
+```rust
+use snowid;
+
+fn main() {
+    // Generate an ID using the default machine ID (1)
+    let id = snowid::generate_id();
+    println!("Generated ID: {}", id);
+
+    // Or specify exactly which machine/worker is generating the ID
+    let worker_id = snowid::generate_id_for_machine(2);
+    println!("Generated ID from worker 2: {}", worker_id);
+}
+```
+
+---
+
 ## 🚀 Quick Start (PostgreSQL)
 
 ### Option 1: Managed Cloud PostgreSQL (AWS RDS, Supabase, Neon, Railway)
