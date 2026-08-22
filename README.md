@@ -1,7 +1,7 @@
 # SnowIDv2 ❄️
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Rust](https://github.com/your-username/SnowID-V2/actions/workflows/rust.yml/badge.svg)](https://github.com/your-username/SnowID-V2/actions/workflows/rust.yml)
+[![Rust](https://github.com/ArmanX-Labs/SnowIDv2/actions/workflows/rust.yml/badge.svg)](https://github.com/ArmanX-Labs/SnowIDv2/actions/workflows/rust.yml)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-14%20%7C%2015%20%7C%2016%20%7C%2017-blue)](https://www.postgresql.org/)
 
 High-performance, 64-bit Snowflake-style distributed ID generator for PostgreSQL and Rust.
@@ -23,15 +23,15 @@ Generate strictly time-ordered, distributed, 64-bit IDs directly inside your dat
 
 ```mermaid
 graph TD
-    App["Backend Application<br/>(Node.js, Rust, Go, Python)"] -->|INSERT INTO ... RETURNING id| PG["PostgreSQL Database"]
+    App["Backend Application (Node.js, Rust, Go, Python)"] -->|INSERT INTO ... RETURNING id| PG["PostgreSQL Database"]
     
     subgraph PostgreSQL Layer
-        PG -->|DEFAULT snowid()| NativeExt["Native Rust Extension<br/>(snowid_pg)"]
-        PG -->|DEFAULT snowid_next(1)| PureSQL["Pure SQL Function<br/>(postgres_pure.sql)"]
+        PG -->|DEFAULT snowid()| NativeExt["Native Rust Extension (snowid_pg)"]
+        PG -->|DEFAULT snowid_next(1)| PureSQL["Pure SQL Function (postgres_pure.sql)"]
     end
     
     subgraph Core Logic
-        NativeExt --> Core["Core Rust Library<br/>(snowid)"]
+        NativeExt --> Core["Core Rust Library (snowid)"]
     end
     
     style App fill:#f9f,stroke:#333,stroke-width:2px
