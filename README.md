@@ -155,3 +155,13 @@ SnowIDv2/
 │   └── schema_examples.sql  # Turnkey schema & zero-app-generation examples
 └── README.md
 ```
+
+---
+
+## 🤝 Contributing
+
+We love contributions! Whether you're fixing a bug, adding a new language example, or improving the documentation, your help is welcome.
+
+We have created several **[Good First Issues](https://github.com/ArmanX-Labs/SnowIDv2/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22)** specifically designed for new open-source contributors. Feel free to pick one up!
+
+Please read our [Contributing Guide](CONTRIBUTING.md) to learn how to set up your environment, run tests, and submit a Pull Request. Don't forget to review our [Code of Conduct](CODE_OF_CONDUCT.md) as well.
