@@ -1,6 +1,6 @@
 comment = 'SnowIDv2: High-performance Snowflake-style ID generator for PostgreSQL'
 default_version = '@CARGO_VERSION@'
-module_pathname = '$libdir/snowid'
+module_pathname = '$libdir/snowidv2'
 relocatable = false
 superuser = true
 trusted = false

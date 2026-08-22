@@ -26,12 +26,12 @@ graph TD
     App["Backend Application (Node.js, Rust, Go, Python)"] -->|INSERT INTO ... RETURNING id| PG["PostgreSQL Database"]
     
     subgraph PostgreSQL Layer
-        PG -->|"DEFAULT snowid()"| NativeExt["Native Rust Extension (snowid_pg)"]
-        PG -->|"DEFAULT snowid_next(1)"| PureSQL["Pure SQL Function (postgres_pure.sql)"]
+        PG -->|"DEFAULT snowidv2()"| NativeExt["Native Rust Extension (snowidv2_pg)"]
+        PG -->|"DEFAULT snowidv2_next(1)"| PureSQL["Pure SQL Function (postgres_pure.sql)"]
     end
     
     subgraph Core Logic
-        NativeExt --> Core["Core Rust Library (snowid)"]
+        NativeExt --> Core["Core Rust Library (snowidv2)"]
     end
     
     style App fill:#f9f,stroke:#333,stroke-width:2px
@@ -63,20 +63,20 @@ If you just want to generate Snowflake IDs directly inside your Rust application
 
 1. Add the core library to your `Cargo.toml`:
 ```bash
-cargo add snowid
+cargo add snowidv2
 ```
 
 2. Generate an ID anywhere in your code:
 ```rust
-use snowid;
+use snowidv2;
 
 fn main() {
     // Generate an ID using the default machine ID (1)
-    let id = snowid::generate_id();
+    let id = snowidv2::generate_id();
     println!("Generated ID: {}", id);
 
     // Or specify exactly which machine/worker is generating the ID
-    let worker_id = snowid::generate_id_for_machine(2);
+    let worker_id = snowidv2::generate_id_for_machine(2);
     println!("Generated ID from worker 2: {}", worker_id);
 }
 ```
@@ -89,10 +89,10 @@ fn main() {
 You can inject the ID generator directly into any Postgres database using pure SQL, without installing any native extensions. 
 
 **Zero-Setup from Rust (SQLx, Diesel, etc.):**
-The core `snowid` crate embeds the pure SQL script natively. You can execute it on startup against your database pool without downloading anything manually:
+The core `snowidv2` crate embeds the pure SQL script natively. You can execute it on startup against your database pool without downloading anything manually:
 ```rust
-// Execute this once on application startup to create the `snowid_next()` function
-sqlx::query(snowid::POSTGRES_PURE_SQL)
+// Execute this once on application startup to create the `snowidv2_next()` function
+sqlx::query(snowidv2::POSTGRES_PURE_SQL)
     .execute(&pool)
     .await?;
 ```
@@ -101,11 +101,11 @@ sqlx::query(snowid::POSTGRES_PURE_SQL)
 Alternatively, run the turnkey pure SQL script [`sql/postgres_pure.sql`](sql/postgres_pure.sql) in your database query editor:
 
 ```sql
--- 1. Run sql/postgres_pure.sql (or use the Rust snippet above) once to define snowid_next(machine_id)
+-- 1. Run sql/postgres_pure.sql (or use the Rust snippet above) once to define snowidv2_next(machine_id)
 
--- 2. Define your table with DEFAULT snowid_next(1)
+-- 2. Define your table with DEFAULT snowidv2_next(1)
 CREATE TABLE users (
-    id BIGINT PRIMARY KEY DEFAULT snowid_next(1),
+    id BIGINT PRIMARY KEY DEFAULT snowidv2_next(1),
     username TEXT NOT NULL,
     created_at TIMESTAMPTZ DEFAULT NOW()
 );
@@ -120,26 +120,26 @@ INSERT INTO users (username) VALUES ('alice') RETURNING id;
 We provide a multi-stage `Dockerfile` and `docker-compose.yml` that builds and pre-installs the native Rust extension automatically:
 
 ```bash
-# Start PostgreSQL 17 with the SnowID native extension pre-installed
+# Start PostgreSQL 17 with the SnowIDv2 native extension pre-installed
 docker compose up -d --build
 
 # Connect to the database and test ID generation right away
-docker exec -it snowid_postgres psql -U postgres -d snowid_demo
+docker exec -it snowidv2_postgres psql -U postgres -d snowidv2_demo
 ```
 
 Or build directly with Docker:
 ```bash
-docker build --build-arg PG_MAJOR=17 -t snowid-postgres:latest .
-docker run -d --name snowid-pg -p 5432:5432 -e POSTGRES_PASSWORD=postgres snowid-postgres:latest
+docker build --build-arg PG_MAJOR=17 -t snowidv2-postgres:latest .
+docker run -d --name snowidv2-pg -p 5432:5432 -e POSTGRES_PASSWORD=postgres snowidv2-postgres:latest
 ```
 
 Once running inside PostgreSQL, enable and use the extension:
 
 ```sql
-CREATE EXTENSION IF NOT EXISTS snowid;
+CREATE EXTENSION IF NOT EXISTS snowidv2;
 
 CREATE TABLE orders (
-    id BIGINT PRIMARY KEY DEFAULT snowid(), -- Or DEFAULT snowid_with_machine(2)
+    id BIGINT PRIMARY KEY DEFAULT snowidv2(), -- Or DEFAULT snowidv2_with_machine(2)
     amount NUMERIC(10, 2) NOT NULL
 );
 
@@ -153,7 +153,7 @@ INSERT INTO orders (amount) VALUES (99.99) RETURNING id;
 Inspect when any ID was created and which machine node generated it:
 
 ```sql
-SELECT * FROM snowid_decode(119842790364971008);
+SELECT * FROM snowidv2_decode(119842790364971008);
 ```
 
 ---
@@ -163,7 +163,7 @@ SELECT * FROM snowid_decode(119842790364971008);
 Run the included benchmark on your machine:
 
 ```bash
-cargo run --release -p snowid --example benchmark
+cargo run --release -p snowidv2 --example benchmark
 ```
 
 ```
@@ -182,12 +182,12 @@ cargo run --release -p snowid --example benchmark
 
 ```
 SnowIDv2/
-├── Dockerfile               # Multi-stage build for PostgreSQL with SnowID pre-installed
+├── Dockerfile               # Multi-stage build for PostgreSQL with SnowIDv2 pre-installed
 ├── docker-compose.yml       # Turnkey Docker Compose configuration
 ├── docker/
 │   └── initdb/              # Auto-initialization scripts when running via Docker
-├── snowid/                  # Core pure-Rust Snowflake generator library
-├── snowid_pg/               # PostgreSQL Extension wrapper (CREATE EXTENSION snowid;)
+├── snowidv2/                  # Core pure-Rust Snowflake generator library
+├── snowidv2_pg/               # PostgreSQL Extension wrapper (CREATE EXTENSION snowidv2;)
 ├── sql/
 │   ├── postgres_pure.sql    # Pure PL/pgSQL function for Cloud/Managed Postgres
 │   └── schema_examples.sql  # Turnkey schema & zero-app-generation examples

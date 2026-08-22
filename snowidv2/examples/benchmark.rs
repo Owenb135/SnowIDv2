@@ -1,5 +1,5 @@
-use snowid::generate_id;
-use snowid::generator::SnowIdGenerator;
+use snowidv2::generate_id;
+use snowidv2::generator::SnowIdGenerator;
 use std::time::Instant;
 
 fn main() {
@@ -55,7 +55,7 @@ fn main() {
         for thread_idx in 0..num_threads {
             let handle = thread::spawn(move || {
                 for _ in 0..iterations_per_thread {
-                    let _id = snowid::global::generate_id_for_machine((thread_idx % 64) as u16);
+                    let _id = snowidv2::global::generate_id_for_machine((thread_idx % 64) as u16);
                 }
             });
             handles.push(handle);

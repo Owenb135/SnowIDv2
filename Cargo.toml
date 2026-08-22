@@ -1,7 +1,7 @@
 [workspace]
 members = [
-    "snowid",
-    "snowid_pg",
+    "snowidv2",
+    "snowidv2_pg",
 ]
 resolver = "2"
 

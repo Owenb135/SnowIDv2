@@ -1,5 +1,5 @@
 [package]
-name = "snowid"
+name = "snowidv2"
 version = "1.0.0"
 edition = "2024"
 description = "High-performance, 64-bit Snowflake-style distributed ID generator for PostgreSQL and Rust"

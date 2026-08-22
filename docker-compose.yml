@@ -1,26 +1,26 @@
 services:
-  snowid-postgres:
+  snowidv2-postgres:
     build:
       context: .
       dockerfile: Dockerfile
       args:
         PG_MAJOR: 17
-    image: snowid-postgres:latest
-    container_name: snowid_postgres
+    image: snowidv2-postgres:latest
+    container_name: snowidv2_postgres
     restart: unless-stopped
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_DB: snowid_demo
+      POSTGRES_DB: snowidv2_demo
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     volumes:
-      - snowid_pgdata:/var/lib/postgresql/data
+      - snowidv2_pgdata:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres -d snowid_demo"]
+      test: ["CMD-SHELL", "pg_isready -U postgres -d snowidv2_demo"]
       interval: 5s
       timeout: 5s
       retries: 5
 
 volumes:
-  snowid_pgdata:
+  snowidv2_pgdata:

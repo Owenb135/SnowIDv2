@@ -21,17 +21,17 @@ This project and everyone participating in it is governed by the [SnowIDv2 Code 
 
 ## Development Workflow
 
-### Rust Core (`snowid`)
+### Rust Core (`snowidv2`)
 The core Snowflake logic is entirely in Rust.
-To test changes made in `snowid`:
+To test changes made in `snowidv2`:
 ```bash
-cd snowid
+cd snowidv2
 cargo test
 cargo fmt
 cargo clippy -- -D warnings
 ```
 
-### PostgreSQL Extension (`snowid_pg`)
+### PostgreSQL Extension (`snowidv2_pg`)
 If you are changing the PostgreSQL extension, you will need the `pgrx` framework.
 1. Install `cargo-pgrx`:
    ```bash
@@ -40,7 +40,7 @@ If you are changing the PostgreSQL extension, you will need the `pgrx` framework
    ```
 2. Run tests against PostgreSQL:
    ```bash
-   cd snowid_pg
+   cd snowidv2_pg
    cargo pgrx test
    ```
 
@@ -48,7 +48,7 @@ If you are changing the PostgreSQL extension, you will need the `pgrx` framework
 You can also verify changes using the provided Docker setup:
 ```bash
 docker compose up -d --build
-docker exec -it snowid_postgres psql -U postgres -d snowid_demo
+docker exec -it snowidv2_postgres psql -U postgres -d snowidv2_demo
 ```
 
 ## Submitting a Pull Request

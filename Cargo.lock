@@ -1544,20 +1544,20 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8ed6a63f02c8539c91a8685a86f4099661ba3da017932f6ebbea6de3f0fa7c90"
 
 [[package]]
-name = "snowid"
+name = "snowidv2"
 version = "1.0.0"
 dependencies = [
  "once_cell",
 ]
 
 [[package]]
-name = "snowid_pg"
+name = "snowidv2_pg"
 version = "0.0.0"
 dependencies = [
  "pgrx",
  "pgrx-bench",
  "pgrx-tests",
- "snowid",
+ "snowidv2",
 ]
 
 [[package]]

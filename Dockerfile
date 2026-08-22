@@ -38,13 +38,13 @@ RUN cargo install --locked cargo-pgrx --version 0.18.0
 RUN cargo pgrx init --pg${PG_MAJOR}=/usr/lib/postgresql/${PG_MAJOR}/bin/pg_config
 
 # Set working directory
-WORKDIR /usr/src/snowid
+WORKDIR /usr/src/snowidv2
 
 # Copy entire workspace
 COPY . .
 
 # Build and install the pgrx extension for the target PostgreSQL version
-WORKDIR /usr/src/snowid/snowid_pg
+WORKDIR /usr/src/snowidv2/snowidv2_pg
 RUN cargo pgrx install --release --no-default-features --features pg${PG_MAJOR}
 
 # ==============================================================================
@@ -55,16 +55,16 @@ FROM postgres:${PG_MAJOR}-bookworm AS runtime
 ARG PG_MAJOR
 
 # Copy built extension library and SQL/control files from builder stage
-COPY --from=builder /usr/lib/postgresql/${PG_MAJOR}/lib/*snowid* /usr/lib/postgresql/${PG_MAJOR}/lib/
-COPY --from=builder /usr/share/postgresql/${PG_MAJOR}/extension/snowid* /usr/share/postgresql/${PG_MAJOR}/extension/
+COPY --from=builder /usr/lib/postgresql/${PG_MAJOR}/lib/*snowidv2* /usr/lib/postgresql/${PG_MAJOR}/lib/
+COPY --from=builder /usr/share/postgresql/${PG_MAJOR}/extension/snowidv2* /usr/share/postgresql/${PG_MAJOR}/extension/
 
 # Copy initialization scripts so the extension and pure SQL functions are auto-loaded on first boot
 COPY docker/initdb/ /docker-entrypoint-initdb.d/
 COPY sql/postgres_pure.sql /docker-entrypoint-initdb.d/02-postgres_pure.sql
-COPY sql/ /usr/local/share/snowid/sql/
+COPY sql/ /usr/local/share/snowidv2/sql/
 
 # Set default environment variables (can be overridden)
-ENV POSTGRES_DB=snowid_demo
+ENV POSTGRES_DB=snowidv2_demo
 ENV POSTGRES_USER=postgres
 ENV POSTGRES_PASSWORD=postgres
 

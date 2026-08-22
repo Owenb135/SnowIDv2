@@ -1,21 +1,21 @@
 use pgrx::prelude::*;
 
 // import core functions
-use snowid_core::{decode, generate_id, generate_id_for_machine};
+use snowidv2_core::{decode, generate_id, generate_id_for_machine};
 
 pgrx::pg_module_magic!();
 
 /// Generate a Snowflake ID using default machine ID (1).
-/// Can be used as a table column default: `id BIGINT PRIMARY KEY DEFAULT snowid()`
+/// Can be used as a table column default: `id BIGINT PRIMARY KEY DEFAULT snowidv2()`
 #[pg_extern]
-fn snowid() -> i64 {
+fn snowidv2() -> i64 {
     generate_id() as i64
 }
 
 /// Generate a Snowflake ID for a specific machine ID (0..63).
-/// Can be used as a table column default: `id BIGINT PRIMARY KEY DEFAULT snowid_with_machine(2)`
+/// Can be used as a table column default: `id BIGINT PRIMARY KEY DEFAULT snowidv2_with_machine(2)`
 #[pg_extern]
-fn snowid_with_machine(machine_id: i32) -> i64 {
+fn snowidv2_with_machine(machine_id: i32) -> i64 {
     if machine_id < 0 || machine_id > 63 {
         panic!("machine_id must be between 0 and 63, got {}", machine_id);
     }
@@ -23,9 +23,9 @@ fn snowid_with_machine(machine_id: i32) -> i64 {
 }
 
 /// Decode a Snowflake ID into its timestamp (ms since UNIX epoch), machine_id, and sequence.
-/// Example: `SELECT * FROM snowid_decode(123456789012345678);`
+/// Example: `SELECT * FROM snowidv2_decode(123456789012345678);`
 #[pg_extern]
-fn snowid_decode(
+fn snowidv2_decode(
     id: i64,
 ) -> TableIterator<
     'static,

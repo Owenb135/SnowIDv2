@@ -4,11 +4,11 @@
 -- ==============================================================================
 
 -- 1. Enable the SnowID native Rust extension
-CREATE EXTENSION IF NOT EXISTS snowid;
+CREATE EXTENSION IF NOT EXISTS snowidv2;
 
--- 2. Create sample demonstration table with native snowid() primary key
+-- 2. Create sample demonstration table with native snowidv2() primary key
 CREATE TABLE IF NOT EXISTS demo_users (
-    id BIGINT PRIMARY KEY DEFAULT snowid(),
+    id BIGINT PRIMARY KEY DEFAULT snowidv2(),
     username TEXT NOT NULL UNIQUE,
     created_at TIMESTAMPTZ DEFAULT NOW()
 );
