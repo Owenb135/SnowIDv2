@@ -1,7 +1,8 @@
 [package]
 name = "snowidv2_pg"
 version = "0.0.0"
-edition = "2021"
+edition = "2026"
+publish = false
 
 [lib]
 name = "snowidv2"
@@ -20,7 +21,7 @@ pg_bench = ["dep:pgrx-bench"]
 
 [dependencies]
 pgrx = "=0.18.0"
-snowidv2_core = { path = "../snowidv2", package = "snowidv2" }
+snowidv2_core = { path = "../snowidv2", package = "snowidv2", version = "1.0.0" }
 
 [dependencies.pgrx-bench]
 version = "=0.18.0"
