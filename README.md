@@ -60,10 +60,22 @@ SnowIDv2 generates a 64-bit integer (`BIGINT`) composed of three parts, keeping 
 ## 🚀 Quick Start (PostgreSQL)
 
 ### Option 1: Managed Cloud PostgreSQL (AWS RDS, Supabase, Neon, Railway)
-Run the turnkey pure SQL script [`sql/postgres_pure.sql`](sql/postgres_pure.sql) in your database query editor:
+You can inject the ID generator directly into any Postgres database using pure SQL, without installing any native extensions. 
+
+**Zero-Setup from Rust (SQLx, Diesel, etc.):**
+The core `snowid` crate embeds the pure SQL script natively. You can execute it on startup against your database pool without downloading anything manually:
+```rust
+// Execute this once on application startup to create the `snowid_next()` function
+sqlx::query(snowid::POSTGRES_PURE_SQL)
+    .execute(&pool)
+    .await?;
+```
+
+**Manual Setup:**
+Alternatively, run the turnkey pure SQL script [`sql/postgres_pure.sql`](sql/postgres_pure.sql) in your database query editor:
 
 ```sql
--- 1. Run sql/postgres_pure.sql once to define snowid_next(machine_id)
+-- 1. Run sql/postgres_pure.sql (or use the Rust snippet above) once to define snowid_next(machine_id)
 
 -- 2. Define your table with DEFAULT snowid_next(1)
 CREATE TABLE users (
