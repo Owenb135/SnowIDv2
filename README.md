@@ -26,8 +26,8 @@ graph TD
     App["Backend Application (Node.js, Rust, Go, Python)"] -->|INSERT INTO ... RETURNING id| PG["PostgreSQL Database"]
     
     subgraph PostgreSQL Layer
-        PG -->|DEFAULT snowid()| NativeExt["Native Rust Extension (snowid_pg)"]
-        PG -->|DEFAULT snowid_next(1)| PureSQL["Pure SQL Function (postgres_pure.sql)"]
+        PG -->|"DEFAULT snowid()"| NativeExt["Native Rust Extension (snowid_pg)"]
+        PG -->|"DEFAULT snowid_next(1)"| PureSQL["Pure SQL Function (postgres_pure.sql)"]
     end
     
     subgraph Core Logic
