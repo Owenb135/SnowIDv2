@@ -3,6 +3,8 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Rust](https://github.com/ArmanX-Labs/SnowIDv2/actions/workflows/rust.yml/badge.svg)](https://github.com/ArmanX-Labs/SnowIDv2/actions/workflows/rust.yml)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-14%20%7C%2015%20%7C%2016%20%7C%2017-blue)](https://www.postgresql.org/)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/ArmanX-Labs/SnowIDv2/pulls)
+[![Repo Size](https://img.shields.io/github/repo-size/ArmanX-Labs/SnowIDv2)](https://github.com/ArmanX-Labs/SnowIDv2)
 
 High-performance, 64-bit Snowflake-style distributed ID generator for PostgreSQL and Rust.
 
