@@ -42,7 +42,7 @@ DECLARE
     result_id BIGINT;
 BEGIN
     IF machine_id < 0 OR machine_id > 63 THEN
-        RAISE EXCEPTION 'machine_id % is out of range (must be between 0 and 63)', machine_id;
+        RAISE EXCEPTION 'Invalid machine ID %: must be between 0 and 63', machine_id;
     END IF;
 
     now_ms := (EXTRACT(EPOCH FROM clock_timestamp()) * 1000)::BIGINT - custom_epoch;
