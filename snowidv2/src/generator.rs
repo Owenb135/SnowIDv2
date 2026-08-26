@@ -10,7 +10,7 @@ pub struct SnowIdGenerator {
 impl SnowIdGenerator {
     pub fn new(machine_id: u16) -> Self {
         if machine_id > MAX_MACHINE_ID {
-            panic!("machine_id exceeds allowed limit")
+            panic!("Invalid machine ID {machine_id}: must be between 0 and {MAX_MACHINE_ID}")
         }
 
         Self {
