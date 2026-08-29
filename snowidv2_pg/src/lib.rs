@@ -18,7 +18,7 @@ fn snowidv2() -> i64 {
 fn snowidv2_with_machine(machine_id: i32) -> i64 {
     if machine_id < 0 || machine_id > 63 {
         error!(
-            "Invalid machine ID {}: must be between 0 and 63", 
+            "Invalid machine ID {}: must be between 0 and 63",
             machine_id
         );
     }
