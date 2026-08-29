@@ -17,7 +17,8 @@ fn snowidv2() -> i64 {
 #[pg_extern]
 fn snowidv2_with_machine(machine_id: i32) -> i64 {
     if machine_id < 0 || machine_id > 63 {
-        error!("Invalid machine ID {}: must be between 0 and 63", 
+        error!(
+            "Invalid machine ID {}: must be between 0 and 63", 
             machine_id
         );
     }
