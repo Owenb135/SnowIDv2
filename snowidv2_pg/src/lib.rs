@@ -12,13 +12,13 @@ fn snowidv2() -> i64 {
     generate_id() as i64
 }
 
-/// Generate a Snowflake ID for a specific machine ID (0..63).
+/// Generate a Snowflake ID for a specific machine ID (0..1023).
 /// Can be used as a table column default: `id BIGINT PRIMARY KEY DEFAULT snowidv2_with_machine(2)`
 #[pg_extern]
 fn snowidv2_with_machine(machine_id: i32) -> i64 {
-    if machine_id < 0 || machine_id > 63 {
+    if machine_id < 0 || machine_id > 1023 {
         error!(
-            "Invalid machine ID {}: must be between 0 and 63",
+            "Invalid machine ID {}: must be between 0 and 1023",
             machine_id
         );
     }
